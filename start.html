@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Happy Birthday 💗</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: url('./download/download9.png') no-repeat center center fixed;
+      background-size: cover;
+      font-family: "Poppins", sans-serif;
+    }
+
+    .container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(3px);
+    }
+
+    /* input section */
+    #input-section {
+      text-align: center;
+      background: rgba(255,255,255,0.7);
+      padding: 30px 40px;
+      border-radius: 18px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    #input-section h2 {
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    #input-section input {
+      padding: 12px;
+      width: 260px;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      font-size: 18px;
+      text-align: center;
+      margin-bottom: 20px;
+      background: #e8f0ff;
+    }
+
+    #input-section button {
+      width: 100%;
+      padding: 12px 25px;
+      font-size: 18px;
+      background: #ff4fb3;
+      border: none;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+
+    #input-section button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 15px rgba(255,79,179,0.5);
+    }
+
+    /* birthday text */
+    #name-text {
+      text-align: center;
+      font-size: 40px;
+      font-weight: bold;
+      color: #ff3e88;
+      margin-top: 20px;
+      text-shadow: 0 0 10px rgba(255, 62, 136, 0.5);
+    }
+
+    /* gift box */
+    #gift-box {
+      display: none;
+      margin-top: 30px;
+      font-size: 60px;
+      cursor: pointer;
+      animation: bounce 1s infinite;
+    }
+
+    #gift-box-text {
+      display: none;
+      margin-top: 10px;
+      color: #ff3e88;
+      font-weight: 600;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* confetti */
+    #confetti-container {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .confetti {
+      position: absolute;
+      font-size: 22px;
+      animation: fall 2.5s linear forwards;
+    }
+
+    @keyframes fall {
+      from { transform: translateY(-10vh); opacity: 1; }
+      to { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <!-- 1. Enter Name -->
+    <div id="input-section">
+      <h2>Enter Your Name 💕</h2>
+      <input id="username" type="text" placeholder="Type your name...">
+      <button onclick="submitName()">Continue ➜</button>
+    </div>
+
+    <!-- 2. Typed “Happy Birthday …” text -->
+    <h1 id="name-text" style="display:none;"></h1>
+
+    <!-- 3. Gift box -->
+    <div id="gift-box" onclick="openGift()">🎁</div>
+    <div id="gift-box-text">Tap the gift to open your surprise!</div>
+
+    <!-- confetti -->
+    <div id="confetti-container"></div>
+  </div>
+
+  <script>
+    let currentName = "Riya";
+
+    function submitName() {
+      const input = document.getElementById("username").value.trim();
+      currentName = input || "Riya";
+
+      // Hide the input card
+      document.getElementById("input-section").style.display = "none";
+
+      // Show name text
+      const nameText = document.getElementById("name-text");
+      nameText.style.display = "block";
+      nameText.textContent = ""; // clear previous if any
+
+      startTyping(currentName);
+    }
+
+    function startTyping(name) {
+      const message = `🎉 Happy Birthday ${name}! 🎀`;
+      const nameHolder = document.getElementById("name-text");
+      const confettiContainer = document.getElementById("confetti-container");
+
+      let i = 0;
+
+      function typeMessage() {
+        if (i < message.length) {
+          nameHolder.textContent += message.charAt(i);
+          i++;
+          setTimeout(typeMessage, 80);
+        } else {
+          launchConfetti();
+          showGift();
+        }
+      }
+
+      typeMessage();
+    }
+
+    function launchConfetti() {
+      const emojis = ["🎉", "🎊", "🎈", "💖", "⭐"];
+      const count = 80;
+
+      for (let j = 0; j < count; j++) {
+        const span = document.createElement("span");
+        span.className = "confetti";
+        span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        span.style.left = Math.random() * 100 + "vw";
+        span.style.animationDelay = Math.random() * 1.5 + "s";
+        document.getElementById("confetti-container").appendChild(span);
+
+        setTimeout(() => span.remove(), 3000);
+      }
+    }
+
+    function showGift() {
+      document.getElementById("gift-box").style.display = "block";
+      document.getElementById("gift-box-text").style.display = "block";
+    }
+
+    function openGift() {
+      // go to your OLD birthday page
+      // if your file is named something else, change 'birthday.html'
+      window.location.href = "index.html?name=" + encodeURIComponent(currentName);
+    }
+  </script>
+</body>
+</html>
